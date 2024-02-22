@@ -5,7 +5,6 @@ services:
     platform: linux/amd64
     container_name: mysql_db
     build: ./docker-containers/mysql/
-    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-u", "root", "-ppassword"]
       interval: 3s

@@ -2,24 +2,39 @@ package controllers
 
 import (
 	"log"
-	"time"
+	// "time"
+	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 
-	// "github.com/Koshikawaxxx1927/sharetri-backend/config"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
+	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
 )
 
 func CreateTrip(c *gin.Context) {
-	userId := c.Param("userid")
+	userid := c.Param("userid")
+
+	prefectureid := c.PostForm("prefectureid")
+	title := c.PostForm("title")
+	startdate := 	c.PostForm("startdate")
+	enddate := c.PostForm("enddate")
+	memo := c.PostForm("memo")
+	imagepath := c.PostForm("imagepath")
+	ispublic, _ := strconv.ParseBool(c.PostForm("ispublic"))
+
+	// startdate = utils.StringToTime(startdate)
+	// enddate = utils.StringToTime(enddate)
+	// ispublic = strconv.ParseBool(ispublic)
+
 	trip := models.Trip{
-		UserID: userId,
-		PrefectureID: "12",
-		Title: "千葉旅行",
-		StartDate: time.Now(),
-		EndDate: time.Now(),
-		Memo: "ここは楽しい",
-		IsPublic: true,
+		UserID: userid,
+		PrefectureID: prefectureid,
+		Title: title,
+		StartDate: utils.StringToTime(startdate),
+		EndDate: utils.StringToTime(enddate),
+		Memo: memo,
+		ImagePath: imagepath,
+		IsPublic: ispublic,
 	}
 	
 	if err := trip.CreateTrip(); err != nil {
@@ -37,6 +52,36 @@ func FindTripByID(c *gin.Context) {
 	var trip models.Trip
 	id := c.Param("id")
 	trip.FindTripByID(id)
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": trip,
+	})
+}
+
+func UpdateTripByID(c *gin.Context) {
+	var trip models.Trip
+	id := c.Param("id")
+	trip.FindTripByID(id)
+
+	userid := c.PostForm("userid")
+	prefectureid := c.PostForm("prefectureid")
+	title := c.PostForm("title")
+	startdate := c.PostForm("startdate")
+	enddate := c.PostForm("enddate")
+	memo := c.PostForm("memo")
+	imagepath := c.PostForm("imagepath")
+	ispublic := c.PostForm("ispublic")
+	
+	
+	trip.UserID = userid
+	trip.PrefectureID = prefectureid
+	trip.Title = title
+	trip.StartDate = utils.StringToTime(startdate)
+	trip.EndDate = utils.StringToTime(enddate)
+	trip.Memo = memo
+	trip.ImagePath = imagepath
+	trip.IsPublic, _ = strconv.ParseBool(ispublic)
+	trip.UpdateTripByID()
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": trip,

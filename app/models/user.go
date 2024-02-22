@@ -25,6 +25,11 @@ func (user *User) FindUserByID(id string) (err error) {
 	return db.First(user, id).Error
 }
 
+func (user *User) UpdateUserByID() (err error) {
+	db := config.GetDB()
+	return db.Save(&user).Error
+}
+
 func (user *User) DeleteUserByID(id string) (err error) {
 	db := config.GetDB()
 	err = db.Delete(user, id).Error

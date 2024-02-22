@@ -10,16 +10,18 @@ func Router() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	// router.GET("/", controllers.Index)
-	// router.GET("/product", controllers.ProductIndex)
-	router.GET("/createuser", controllers.CreateUser)
-	router.GET("/finduser/:id", controllers.FindUserByID)
-	router.GET("/deleteuser/:id", controllers.DeleteUserByID)
-	router.GET("/findprefecture/:id", controllers.FindPrefectureByID)
+	router.POST("/user", controllers.CreateUser)
+	router.GET("/user/:id", controllers.FindUserByID)
+	router.DELETE("/user/:id", controllers.DeleteUserByID)
+	router.PUT("/user/:id", controllers.UpdateUserByID)
 
-	router.GET("/addtrip/:userid", controllers.CreateTrip)
-	router.GET("/findtrip/:id", controllers.FindTripByID)
-	router.GET("/deletetrip/:id", controllers.DeleteTripByID)
+
+	router.GET("/prefecture/:id", controllers.FindPrefectureByID)
+
+	router.POST("/trip/:userid", controllers.CreateTrip)
+	router.PUT("/trip/:userid", controllers.UpdateTripByID)
+	router.GET("/trip/:id", controllers.FindTripByID)
+	router.DELETE("/trip/:id", controllers.DeleteTripByID)
 
 	router.GET("/addspot/:tripid", controllers.CreateSpot)
 	router.GET("/findspot/:id", controllers.FindSpotByID)

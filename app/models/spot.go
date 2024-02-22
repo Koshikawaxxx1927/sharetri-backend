@@ -27,6 +27,11 @@ func (spot *Spot) FindSpotByID(id string) (err error) {
 	return db.First(spot, id).Error
 }
 
+func (spot *Spot) UpdateSpotByID() (err error) {
+	db := config.GetDB()
+	return db.Save(&spot).Error
+}
+
 func (spot *Spot) DeleteSpotByID(id string) (err error) {
 	db := config.GetDB()
 	err = db.Delete(spot, id).Error

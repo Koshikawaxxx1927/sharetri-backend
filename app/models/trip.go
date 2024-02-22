@@ -30,6 +30,11 @@ func (trip *Trip) FindTripByID(id string) (err error) {
 	return db.First(trip, id).Error
 }
 
+func (trip *Trip) UpdateTripByID() (err error) {
+	db := config.GetDB()
+	return db.Save(&trip).Error
+}
+
 func (trip *Trip) DeleteTripByID(id string) (err error) {
 	db := config.GetDB()
 	err = db.Delete(trip, id).Error
