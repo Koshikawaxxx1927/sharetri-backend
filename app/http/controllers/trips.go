@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"log"
-	// "time"
 	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -21,10 +20,6 @@ func CreateTrip(c *gin.Context) {
 	memo := c.PostForm("memo")
 	imagepath := c.PostForm("imagepath")
 	ispublic, _ := strconv.ParseBool(c.PostForm("ispublic"))
-
-	// startdate = utils.StringToTime(startdate)
-	// enddate = utils.StringToTime(enddate)
-	// ispublic = strconv.ParseBool(ispublic)
 
 	trip := models.Trip{
 		UserID: userid,

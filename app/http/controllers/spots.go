@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	// "time"
+	// "fmt"
 	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,6 @@ func CreateSpot(c *gin.Context) {
 	endtime := c.PostForm("endtime")
 	cost, _ := strconv.Atoi(c.PostForm("cost"))
 	memo := c.PostForm("memo")
-
 	spot := models.Spot{
 		TripID: tripid,
 		Name: name,

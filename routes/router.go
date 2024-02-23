@@ -23,9 +23,10 @@ func Router() {
 	router.GET("/trip/:id", controllers.FindTripByID)
 	router.DELETE("/trip/:id", controllers.DeleteTripByID)
 
-	router.GET("/addspot/:tripid", controllers.CreateSpot)
-	router.GET("/findspot/:id", controllers.FindSpotByID)
-	router.GET("/deletespot/:id", controllers.DeleteSpotByID)
+	router.POST("/spot/:tripid", controllers.CreateSpot)
+	router.GET("/spot/:id", controllers.FindSpotByID)
+	router.PUT("/spot/:id", controllers.UpdateSpotByID)
+	router.DELETE("/spot/:id", controllers.DeleteSpotByID)
 	
 
 	router.Run(":8080")
