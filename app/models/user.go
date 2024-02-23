@@ -11,8 +11,8 @@ type User struct {
 	gorm.Model
 	Trips []Trip `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE"`
 	Name string `json:"name"`
-	IconPath string `json:"iconPath"`
-	LastLoginTime time.Time `json:lastLoginTate`
+	IconPath string `json:"iconpath"`
+	LastLoginTime time.Time
 }
 
 func (user *User) CreateUser() (err error) {

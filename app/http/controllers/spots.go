@@ -2,33 +2,18 @@ package controllers
 
 import (
 	"log"
-	// "time"
-	// "fmt"
-	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
-	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
 )
 
 func CreateSpot(c *gin.Context) {
+	var spot models.Spot
 	tripid := c.Param("tripid")
-
-	name := c.PostForm("name")
-	date := c.PostForm("date")
-	starttime := c.PostForm("starttime")
-	endtime := c.PostForm("endtime")
-	cost, _ := strconv.Atoi(c.PostForm("cost"))
-	memo := c.PostForm("memo")
-	spot := models.Spot{
-		TripID: tripid,
-		Name: name,
-		Date: utils.StringToTime(date),
-		StartTime: utils.StringToTime(starttime),
-		EndTime: utils.StringToTime(endtime),
-		Cost: cost,
-		Memo: memo,
+	if err := c.ShouldBindJSON(&spot); err != nil {
+		log.Fatal("Failed to bind json")
 	}
+	spot.TripID = tripid
 	
 	if err := spot.CreateSpot(); err != nil {
 		log.Fatal("Failed to create new spot")
@@ -54,24 +39,12 @@ func UpdateSpotByID(c *gin.Context) {
 	id := c.Param("id")
 	spot.FindSpotByID(id)
 
-	tripid := c.PostForm("tripid")
-	name := c.PostForm("name")
-	date := c.PostForm("date")
-	starttime := c.PostForm("starttime")
-	endtime := c.PostForm("endtime")
-	cost, _ := strconv.Atoi(c.PostForm("cost"))
-	memo := c.PostForm("memo")
-	
-	
-	spot.TripID = tripid
-	spot.Name = name
-	spot.Date = utils.StringToTime(date)
-	spot.StartTime = utils.StringToTime(starttime)
-	spot.EndTime = utils.StringToTime(endtime)
-	spot.Cost = cost
-	spot.Memo = memo
-
-	spot.UpdateSpotByID()
+	if err := c.ShouldBindJSON(&spot); err != nil {
+		log.Fatal("Failed to bind json")
+	}
+	if err := spot.UpdateSpotByID(); err != nil {
+		log.Fatal("Failed to update user")
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": spot,

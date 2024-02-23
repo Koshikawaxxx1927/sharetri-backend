@@ -3,30 +3,22 @@ package controllers
 import (
 	"log"
 	"time"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
 )
 
 func CreateUser(c *gin.Context) {
-	name := c.PostForm("name")
-	iconpath := c.PostForm("iconpath")
-
-	fmt.Println(name)
-	fmt.Println(iconpath)
-
-	user := models.User{
-		Name: name,
-		IconPath: iconpath,
-		LastLoginTime: time.Now(),
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		log.Fatal("Faild to bind json")
 	}
-	
+	user.LastLoginTime = time.Now()
+
 	if err := user.CreateUser(); err != nil {
 		log.Fatal("Failed to create new user")
 	}
-	
-	// config.GetDB().First(&user, 3)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": user,
@@ -48,11 +40,12 @@ func UpdateUserByID(c *gin.Context) {
 	id := c.Param("id")
 	user.FindUserByID(id)
 
-	name := c.PostForm("name")
-	iconpath := c.PostForm("iconpath")
-	user.Name = name
-	user.IconPath = iconpath
-	user.UpdateUserByID()
+	if err := c.ShouldBindJSON(&user); err != nil {
+		log.Fatal("Failed to bind json")
+	}
+	if err := user.UpdateUserByID(); err != nil {
+		log.Fatal("Failed to update user")
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": user,
