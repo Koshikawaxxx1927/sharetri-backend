@@ -9,12 +9,13 @@ import (
 type Spot struct {
 	gorm.Model
 	TripID string
-	Name string
-	Date time.Time
-	StartTime time.Time
-	EndTime time.Time
-	Cost int
-	Memo string
+	Name string `json:"name"`
+	Date time.Time `json:"date"`
+	StartTime time.Time `json:"starttime"`
+	EndTime time.Time `json:"endtime"`
+	Cost int `json:"cost"`
+	Memo string `json:"memo"`
+	ImagePath string `json:"imagepath"`
 }
 
 func (spot *Spot) CreateSpot() (err error) {

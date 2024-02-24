@@ -9,15 +9,15 @@ import (
 
 type Trip struct {
 	gorm.Model
-	UserID string `json:userid`
-	PrefectureID string `json:prefectureid`
+	UserID string
+	PrefectureID string `json:"prefectureid"`
 	Spots []Spot `gorm:"fossreignKey:TripID;constraint:OnUpdate:CASCADE"`
-	Title string `json:title`
-	StartDate time.Time `json:startdate`
-	EndDate time.Time `json:enddate`
-	Memo string `json:memo`
-	ImagePath string `json:imagepath`
-	IsPublic bool `json:ispublic`
+	Title string `json:"title"`
+	StartDate time.Time `json:"startdate"`
+	EndDate time.Time `json:"enddate"`
+	Memo string `json:"memo"`
+	ImagePath string `json:"imagepath"`
+	IsPublic bool `json:"ispublic"`
 }
 
 func (trip *Trip) CreateTrip() (err error) {
