@@ -2,7 +2,6 @@ package models
 
 import (
 	"time"
-
 	"gorm.io/gorm"
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
 )
@@ -10,7 +9,7 @@ import (
 type User struct {
 	gorm.Model
 	Trips []Trip `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE"`
-	Name string `json:"name"`
+	Name string `json:"name" binding:"required"`
 	IconPath string `json:"iconpath"`
 	LastLoginTime time.Time
 }

@@ -10,11 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// type Product struct {
-// 	gorm.Model
-// 	Code string
-// 	Price uint
-// }
+var NotFound = gorm.ErrRecordNotFound
 
 var db *gorm.DB
 

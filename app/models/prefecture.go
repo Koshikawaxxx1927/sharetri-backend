@@ -1,7 +1,6 @@
 package models
 
 import (
-	// "gorm.io/gorm"
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
 )
 
@@ -28,5 +27,5 @@ func (prefecture *Prefecture) FindPrefectureByID(id string) (err error) {
 
 func CreatePrefecturesBatches(prefectures []Prefecture) (err error) {
 	db := config.GetDB()
-	return db.CreateInBatches(prefectures, 10).Error
+	return db.CreateInBatches(prefectures, 47).Error
 }
