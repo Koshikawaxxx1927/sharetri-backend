@@ -14,5 +14,6 @@ func main() {
 
 	config.InitDB(*env, true, models.Trip{}, models.User{}, models.Prefecture{}, models.Spot{})
 	seed.Seed()
-	routes.Router()
+	router := routes.Router()
+	router.Run(":8080")
 }

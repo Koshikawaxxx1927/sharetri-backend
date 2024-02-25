@@ -2,14 +2,18 @@ package seed
 
 import (
 	"log"
+	"fmt"
 	"encoding/json"
 	"io/ioutil"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
+	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
 )
 
 func SeedPrefecture() {
 	// JSONファイルの読み込み
-	file, err := ioutil.ReadFile("database/seeddata/prefectures.json")
+	projectRoot := utils.ProjectRoot
+	prefecturePath := fmt.Sprintf("%s/database/seeddata/prefectures.json", projectRoot)
+	file, err := ioutil.ReadFile(prefecturePath)
 	if err != nil {
 		log.Fatal("Error reading JSON file:", err)
 	}

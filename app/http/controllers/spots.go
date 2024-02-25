@@ -11,6 +11,11 @@ import (
 func CreateSpot(c *gin.Context) {
 	var spot models.Spot
 	tripid := c.Param("tripid")
+	var trip models.Trip
+	if err := trip.FindTripByID(tripid); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
 	if err := c.ShouldBindJSON(&spot); err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return

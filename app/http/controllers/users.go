@@ -121,12 +121,12 @@ func DeleteUserIcon(c *gin.Context) {
 	var user models.User
 	id := c.Param("id")
 	if err := user.FindUserByID(id); err == exceptions.NotFound {
-		c.String(http.StatusBadRequest, "Bad request")
+		c.String(http.StatusNotFound, "Not Found")
 		return
 	}
 	
 	if err := utils.DeleteFile(user.IconPath); err != nil {
-		c.String(http.StatusInternalServerError, "Server Error")
+		c.String(http.StatusNotFound, "Not Found")
         return
 	}
 	user.IconPath = ""

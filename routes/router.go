@@ -6,7 +6,7 @@ import (
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/http/controllers"
 )
 
-func Router() {
+func Router() *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.Default())
 
@@ -37,6 +37,5 @@ func Router() {
 	router.POST("/spotimage/:id", controllers.UploadSpotImage)
 	router.DELETE("/spotimage/:id", controllers.DeleteSpotImage)
 	
-
-	router.Run(":8080")
+	return router
 }

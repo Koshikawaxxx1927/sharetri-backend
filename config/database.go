@@ -8,6 +8,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"github.com/joho/godotenv"
+	
+	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
 )
 
 var NotFound = gorm.ErrRecordNotFound
@@ -42,7 +44,8 @@ func setDSN(env string) (dsn string) {
 	// MySQLサーバに接続するためのデータソースネームを設定する
 	// 設定変更は .env/.env.development または .env/.env.production を変更してください
 	// 環境変数の読み込み
-	envFile := fmt.Sprintf("./env/.env.%s", env)
+	projectRoot := utils.ProjectRoot
+	envFile := fmt.Sprintf("%s/env/.env.%s", projectRoot, env)
 	err := godotenv.Load(envFile) 
 	if err != nil {
 		log.Fatal("Error loading .env file", err)

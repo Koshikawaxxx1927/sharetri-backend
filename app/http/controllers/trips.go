@@ -11,6 +11,11 @@ import (
 
 func CreateTrip(c *gin.Context) {
 	userid := c.Param("userid")
+	var user models.User
+	if err := user.FindUserByID(userid); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
 	var trip models.Trip
 	if err := c.ShouldBindJSON(&trip); err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
