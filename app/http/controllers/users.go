@@ -101,7 +101,7 @@ func UploadUserIcon(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := "storage/users/" + id
+	outputFile := utils.ProjectRoot + "/storage/users/" + id
 	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")

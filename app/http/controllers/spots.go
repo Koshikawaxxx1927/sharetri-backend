@@ -106,7 +106,7 @@ func UploadSpotImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := "storage/spots/" + id
+	outputFile := utils.ProjectRoot + "/storage/spots/" + id
 	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")

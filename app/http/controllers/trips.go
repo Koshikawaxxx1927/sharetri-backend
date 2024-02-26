@@ -109,7 +109,7 @@ func UploadTripImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := "storage/trips/" + id
+	outputFile := utils.ProjectRoot + "/storage/trips/" + id
 	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
