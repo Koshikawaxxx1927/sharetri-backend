@@ -9,13 +9,13 @@ import (
 
 type Trip struct {
 	gorm.Model
-	UserID string
-	PrefectureID string `json:"prefectureid"`
+	UserID string `json:"userid"`
+	PrefectureID string `json:"prefectureid" binding:"required"`
 	Spots []Spot `gorm:"fossreignKey:TripID;constraint:OnUpdate:CASCADE"`
-	Title string `json:"title"`
-	StartDate time.Time `json:"startdate"`
-	EndDate time.Time `json:"enddate"`
-	Memo string `json:"memo"`
+	Title string `json:"title" binding:"required"`
+	StartDate time.Time `json:"startdate" binding:"required"`
+	EndDate time.Time `json:"enddate" binding:"required"`
+	Memo string `json:"memo" binding:"required"`
 	ImagePath string `json:"imagepath"`
 	IsPublic bool `json:"ispublic"`
 }

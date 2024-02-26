@@ -2,6 +2,7 @@ package controllers
 
 import (
 	// "log"
+	// "fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
@@ -28,7 +29,7 @@ func CreateTrip(c *gin.Context) {
         return
 	}
 	
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"trip": trip,
 	})
 }
@@ -68,7 +69,7 @@ func UpdateTripByID(c *gin.Context) {
         return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"trip": trip,
 	})
 }
@@ -86,7 +87,7 @@ func DeleteTripByID(c *gin.Context) {
         return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"trip": trip,
 	})
 }
@@ -133,7 +134,7 @@ func DeleteTripImage(c *gin.Context) {
 	}
 	
 	if err := utils.DeleteFile(trip.ImagePath); err != nil {
-		c.String(http.StatusInternalServerError, "Server Error")
+		c.String(http.StatusNotFound, "Not Found")
         return
 	}
 	trip.ImagePath = ""

@@ -8,13 +8,13 @@ import (
 
 type Spot struct {
 	gorm.Model
-	TripID string
-	Name string `json:"name"`
-	Date time.Time `json:"date"`
-	StartTime time.Time `json:"starttime"`
-	EndTime time.Time `json:"endtime"`
-	Cost int `json:"cost"`
-	Memo string `json:"memo"`
+	TripID string `json:"tripid"  binding:"required"`
+	Name string `json:"name" binding:"required"`
+	Date time.Time `json:"date" binding:"required"`
+	StartTime time.Time `json:"starttime" binding:"required"`
+	EndTime time.Time `json:"endtime" binding:"required"`
+	Cost int `json:"cost" binding:"required"`
+	Memo string `json:"memo" binding:"required"`
 	ImagePath string `json:"imagepath"`
 }
 

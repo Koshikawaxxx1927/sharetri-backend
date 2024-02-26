@@ -18,7 +18,6 @@ func Router() *gin.Engine {
 	router.POST("/usericon/:id", controllers.UploadUserIcon)
 	router.DELETE("/usericon/:id", controllers.DeleteUserIcon)
 
-
 	router.GET("/prefecture/:id", controllers.FindPrefectureByID)
 
 	router.POST("/trip/:userid", controllers.CreateTrip)

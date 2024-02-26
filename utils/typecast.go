@@ -1,7 +1,7 @@
 package utils
 
 import (
-    "fmt"
+    // "fmt"
     "time"
 )
 
@@ -13,8 +13,8 @@ func TimeToString(t time.Time) string {
 }
 
 func StringToTime(str string) time.Time {
-    fmt.Println(str)
+    // fmt.Println(str)
     t, _ := time.Parse(layout, str)
-    fmt.Println(t)
+    // fmt.Println(t)
     return t
 }

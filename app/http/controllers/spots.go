@@ -27,7 +27,7 @@ func CreateSpot(c *gin.Context) {
         return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"spot": spot,
 	})
 }
@@ -66,7 +66,7 @@ func UpdateSpotByID(c *gin.Context) {
         return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"spot": spot,
 	})
 }
@@ -84,7 +84,7 @@ func DeleteSpotByID(c *gin.Context) {
         return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"spot": spot,
 	})
 }
@@ -131,7 +131,7 @@ func DeleteSpotImage(c *gin.Context) {
 	}
 	
 	if err := utils.DeleteFile(spot.ImagePath); err != nil {
-		c.String(http.StatusInternalServerError, "Server Error")
+		c.String(http.StatusNotFound, "Not Found")
         return
 	}
 	spot.ImagePath = ""
