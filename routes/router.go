@@ -19,6 +19,7 @@ func Router() *gin.Engine {
 	router.DELETE("/usericon/:id", controllers.DeleteUserIcon)
 
 	router.GET("/prefecture/:id", controllers.FindPrefectureByID)
+	router.GET("/prefecturelist", controllers.GetAllPrefectures)
 
 	router.POST("/trip/:userid", controllers.CreateTrip)
 	router.PUT("/trip/:id", controllers.UpdateTripByID)
@@ -28,10 +29,14 @@ func Router() *gin.Engine {
 	router.POST("/tripimage/:id", controllers.UploadTripImage)
 	router.DELETE("/tripimage/:id", controllers.DeleteTripImage)
 
+	router.GET("/triplist", controllers.GetAllTrips)
+
 	router.POST("/spot/:tripid", controllers.CreateSpot)
 	router.GET("/spot/:id", controllers.FindSpotByID)
 	router.PUT("/spot/:id", controllers.UpdateSpotByID)
 	router.DELETE("/spot/:id", controllers.DeleteSpotByID)
+
+	router.GET("/spotlist/:tripid", controllers.GetSpotsByTripID)
 
 	router.POST("/spotimage/:id", controllers.UploadSpotImage)
 	router.DELETE("/spotimage/:id", controllers.DeleteSpotImage)

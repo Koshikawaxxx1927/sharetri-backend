@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	// "fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
@@ -141,5 +142,17 @@ func DeleteSpotImage(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"spot": spot,
+	})
+}
+
+func GetSpotsByTripID(c *gin.Context) {
+	var spots models.Spots
+	tripid := c.Param("tripid")
+	if err := spots.GetSpotsByTripID(tripid); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"spots": spots,
 	})
 }

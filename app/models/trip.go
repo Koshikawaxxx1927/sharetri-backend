@@ -20,6 +20,8 @@ type Trip struct {
 	IsPublic bool `json:"ispublic"`
 }
 
+type Trips []Trip
+
 func (trip *Trip) CreateTrip() (err error) {
 	db := config.GetDB()
 	return db.Create(trip).Error
@@ -39,4 +41,9 @@ func (trip *Trip) DeleteTripByID(id string) (err error) {
 	db := config.GetDB()
 	err = db.Delete(trip, id).Error
 	return err
+}
+
+func (trips *Trips) GetAllTrips() (err error) {
+	db := config.GetDB()
+	return db.Find(&trips).Error
 }

@@ -32,7 +32,7 @@ func InitDB(env string, isReset bool, models ...interface{}) {
         db.Migrator().DropTable(models...)
     }
 
-	if false {
+	if true {
 		db.Logger = db.Logger.LogMode(logger.Info)
 	}
     db.AutoMigrate(models...)

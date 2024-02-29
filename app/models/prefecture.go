@@ -4,12 +4,6 @@ import (
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
 )
 
-// type Prefecture struct {
-//     ID   int    `gorm:"foreignKey:PrefectureID;constraint:OnUpdate:CASCADE"`
-//     Name string `gorm:"not null"`
-//     Kana string `gorm:"not null"`
-// }
-
 type Prefecture struct {
     ID   int    `gorm:"primaryKey";
 	json:"id"`
@@ -18,14 +12,19 @@ type Prefecture struct {
     Kana string `json:"kana"`
 }
 
+type Prefectures []Prefecture
+
 func (prefecture *Prefecture) FindPrefectureByID(id string) (err error) {
 	db := config.GetDB()
 	return db.First(prefecture, id).Error
 }
 
-// func  (prefecture *Prefecture) ()
-
 func CreatePrefecturesBatches(prefectures []Prefecture) (err error) {
 	db := config.GetDB()
 	return db.CreateInBatches(prefectures, 47).Error
+}
+
+func (prefectures *Prefectures) GetAllPrefectures() (err error) {
+	db := config.GetDB()
+	return db.Find(&prefectures).Error
 }

@@ -146,3 +146,14 @@ func DeleteTripImage(c *gin.Context) {
 		"trip": trip,
 	})
 }
+
+func GetAllTrips(c *gin.Context) {
+	var trips models.Trips
+	if err := trips.GetAllTrips(); err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+        return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"trips": trips,
+	})
+}

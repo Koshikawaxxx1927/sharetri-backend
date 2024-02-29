@@ -10,13 +10,14 @@ type Spot struct {
 	gorm.Model
 	TripID string `json:"tripid"  binding:"required"`
 	Name string `json:"name" binding:"required"`
-	Date time.Time `json:"date" binding:"required"`
 	StartTime time.Time `json:"starttime" binding:"required"`
 	EndTime time.Time `json:"endtime" binding:"required"`
 	Cost int `json:"cost" binding:"required"`
 	Memo string `json:"memo" binding:"required"`
 	ImagePath string `json:"imagepath"`
 }
+
+type Spots []Spot
 
 func (spot *Spot) CreateSpot() (err error) {
 	db := config.GetDB()
@@ -37,4 +38,9 @@ func (spot *Spot) DeleteSpotByID(id string) (err error) {
 	db := config.GetDB()
 	err = db.Delete(spot, id).Error
 	return err
+}
+
+func (spots *Spots) GetSpotsByTripID(tripid string) (err error) {
+	db := config.GetDB()
+	return db.Where("trip_id = ?", tripid).Find(&spots).Error
 }

@@ -22,3 +22,14 @@ func FindPrefectureByID(c *gin.Context) {
 		"prefecture": prefecture,
 	})
 }
+
+func GetAllPrefectures(c *gin.Context) {
+	var prefectures models.Prefectures
+	if err := prefectures.GetAllPrefectures(); err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+        return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"prefectures": prefectures,
+	})
+}
