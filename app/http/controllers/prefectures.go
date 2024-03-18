@@ -9,7 +9,7 @@ import (
 
 func FindPrefectureByID(c *gin.Context) {
 	var prefecture models.Prefecture
-	id := c.Param("id")
+	id := c.Param("prefectureid")
 	prefecture.FindPrefectureByID(id)
 	if err := prefecture.FindPrefectureByID(id); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")

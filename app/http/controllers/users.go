@@ -29,8 +29,8 @@ func CreateUser(c *gin.Context) {
 
 func FindUserByID(c *gin.Context) {
 	var user models.User
-	id := c.Param("id")
-	if err := user.FindUserByID(id); err == exceptions.NotFound {
+	userid := c.Param("userid")
+	if err := user.FindUserByID(userid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	} else if err != nil {
@@ -45,8 +45,8 @@ func FindUserByID(c *gin.Context) {
 
 func UpdateUserByID(c *gin.Context) {
 	var user models.User
-	id := c.Param("id")
-	if err := user.FindUserByID(id); err == exceptions.NotFound {
+	userid := c.Param("userid")
+	if err := user.FindUserByID(userid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	}
@@ -68,13 +68,13 @@ func UpdateUserByID(c *gin.Context) {
 
 func DeleteUserByID(c *gin.Context) {
 	var user models.User
-	id := c.Param("id")
+	userid := c.Param("userid")
 
-	if err := user.FindUserByID(id); err == exceptions.NotFound {
+	if err := user.FindUserByID(userid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	}
-	if err := user.DeleteUserByID(id); err != nil {
+	if err := user.DeleteUserByID(userid); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
         return
 	}
@@ -86,8 +86,8 @@ func DeleteUserByID(c *gin.Context) {
 
 func UploadUserIcon(c *gin.Context) {
 	var user models.User
-	id := c.Param("id")
-	if err := user.FindUserByID(id); err == exceptions.NotFound {
+	userid := c.Param("userid")
+	if err := user.FindUserByID(userid); err == exceptions.NotFound {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
@@ -101,7 +101,7 @@ func UploadUserIcon(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := utils.ProjectRoot + "/storage/users/" + id
+	outputFile := utils.ProjectRoot + "/storage/users/" + userid
 	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
@@ -119,8 +119,8 @@ func UploadUserIcon(c *gin.Context) {
 
 func DeleteUserIcon(c *gin.Context) {
 	var user models.User
-	id := c.Param("id")
-	if err := user.FindUserByID(id); err == exceptions.NotFound {
+	userid := c.Param("userid")
+	if err := user.FindUserByID(userid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	}

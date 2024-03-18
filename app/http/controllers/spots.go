@@ -2,6 +2,7 @@ package controllers
 
 import (
 	// "fmt"
+	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
@@ -35,8 +36,8 @@ func CreateSpot(c *gin.Context) {
 
 func FindSpotByID(c *gin.Context) {
 	var spot models.Spot
-	id := c.Param("id")
-	if err := spot.FindSpotByID(id); err == exceptions.NotFound {
+	spotid := c.Param("spotid")
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	} else if err != nil {
@@ -51,8 +52,8 @@ func FindSpotByID(c *gin.Context) {
 
 func UpdateSpotByID(c *gin.Context) {
 	var spot models.Spot
-	id := c.Param("id")
-	if err := spot.FindSpotByID(id); err == exceptions.NotFound {
+	spotid := c.Param("spotid")
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	}
@@ -74,13 +75,13 @@ func UpdateSpotByID(c *gin.Context) {
 
 func DeleteSpotByID(c *gin.Context) {
 	var spot models.Spot
-	id := c.Param("id")
+	spotid := c.Param("spotid")
 
-	if err := spot.FindSpotByID(id); err == exceptions.NotFound {
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
 		c.String(http.StatusNotFound, "Not Found")
 		return
 	}
-	if err := spot.DeleteSpotByID(id); err != nil {
+	if err := spot.DeleteSpotByID(spotid); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
         return
 	}
@@ -92,8 +93,8 @@ func DeleteSpotByID(c *gin.Context) {
 
 func UploadSpotImage(c *gin.Context) {
 	var spot models.Spot
-	id := c.Param("id")
-	if err := spot.FindSpotByID(id); err == exceptions.NotFound {
+	spotid := c.Param("spotid")
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
@@ -107,7 +108,7 @@ func UploadSpotImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := utils.ProjectRoot + "/storage/spots/" + id
+	outputFile := utils.ProjectRoot + "/storage/spots/" + spotid
 	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
@@ -125,8 +126,8 @@ func UploadSpotImage(c *gin.Context) {
 
 func DeleteSpotImage(c *gin.Context) {
 	var spot models.Spot
-	id := c.Param("id")
-	if err := spot.FindSpotByID(id); err == exceptions.NotFound {
+	spotid := c.Param("spotid")
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
@@ -156,3 +157,58 @@ func GetSpotsByTripID(c *gin.Context) {
 		"spots": spots,
 	})
 }
+
+func GetAllSpots(c *gin.Context) {
+	var spots models.Spots
+	if err := spots.GetAllSpots(); err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+        return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"spots": spots,
+	})
+}
+
+func GetSpotsListByTripID(c *gin.Context) {
+	var spots models.Spots
+	var tripid, offset, limit int
+	var err error
+	if offset, err = strconv.Atoi(c.Query("offset")); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	if limit, err = strconv.Atoi(c.Query("limit")); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	if tripid, err = strconv.Atoi(c.Param("tripid")); err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	// ページング処理を行う
+	if err := spots.GetSpotsListByTripID(tripid, offset, limit); err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+        return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"spots": spots,
+	})
+}
+
+func GetSpotImage(c *gin.Context) {
+	var spot models.Spot
+	spotid := c.Param("spotid")
+	if err := spot.FindSpotByID(spotid); err == exceptions.NotFound {
+		c.String(http.StatusNotFound, "Not Found")
+		return
+	} else if err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+		return
+	}
+	if spot.ImagePath == "" {
+		c.String(http.StatusNotFound, "Not Found")
+		return
+	}
+	c.File(spot.ImagePath)
+}
+

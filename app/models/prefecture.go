@@ -14,9 +14,9 @@ type Prefecture struct {
 
 type Prefectures []Prefecture
 
-func (prefecture *Prefecture) FindPrefectureByID(id string) (err error) {
+func (prefecture *Prefecture) FindPrefectureByID(prefectureid string) (err error) {
 	db := config.GetDB()
-	return db.First(prefecture, id).Error
+	return db.First(prefecture, prefectureid).Error
 }
 
 func CreatePrefecturesBatches(prefectures []Prefecture) (err error) {

@@ -24,9 +24,9 @@ func (spot *Spot) CreateSpot() (err error) {
 	return db.Create(spot).Error
 }
 
-func (spot *Spot) FindSpotByID(id string) (err error) {
+func (spot *Spot) FindSpotByID(spotid string) (err error) {
 	db := config.GetDB()
-	return db.First(spot, id).Error
+	return db.First(spot, spotid).Error
 }
 
 func (spot *Spot) UpdateSpotByID() (err error) {
@@ -34,13 +34,28 @@ func (spot *Spot) UpdateSpotByID() (err error) {
 	return db.Save(&spot).Error
 }
 
-func (spot *Spot) DeleteSpotByID(id string) (err error) {
+func (spot *Spot) DeleteSpotByID(spotid string) (err error) {
 	db := config.GetDB()
-	err = db.Delete(spot, id).Error
+	err = db.Delete(spot, spotid).Error
 	return err
 }
 
 func (spots *Spots) GetSpotsByTripID(tripid string) (err error) {
 	db := config.GetDB()
 	return db.Where("trip_id = ?", tripid).Find(&spots).Error
+}
+
+func (spots *Spots) GetAllSpots() (err error) {
+	db := config.GetDB()
+	return db.Find(&spots).Error
+}
+
+func (spots *Spots) GetSpots(offset, limit int) (err error) {
+	db := config.GetDB()
+	return db.Offset(offset).Limit(limit).Find(&spots).Error
+}
+
+func (spots *Spots) GetSpotsListByTripID(tripid, offset, limit int) (err error) {
+	db := config.GetDB()
+	return db.Where("trip_id = ?", tripid).Offset(offset).Limit(limit).Find(&spots).Error
 }

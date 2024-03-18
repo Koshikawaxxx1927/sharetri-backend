@@ -19,9 +19,9 @@ func (user *User) CreateUser() (err error) {
 	return db.Create(user).Error
 }
 
-func (user *User) FindUserByID(id string) (err error) {
+func (user *User) FindUserByID(userid string) (err error) {
 	db := config.GetDB()
-	return db.First(user, id).Error
+	return db.First(user, userid).Error
 }
 
 func (user *User) UpdateUserByID() (err error) {
@@ -29,8 +29,8 @@ func (user *User) UpdateUserByID() (err error) {
 	return db.Save(&user).Error
 }
 
-func (user *User) DeleteUserByID(id string) (err error) {
+func (user *User) DeleteUserByID(userid string) (err error) {
 	db := config.GetDB()
-	err = db.Delete(user, id).Error
+	err = db.Delete(user, userid).Error
 	return err
 }

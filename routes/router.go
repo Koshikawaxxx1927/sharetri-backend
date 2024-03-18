@@ -10,36 +10,43 @@ func Router() *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.Default())
 
+	// For users
 	router.POST("/user", controllers.CreateUser)
-	router.GET("/user/:id", controllers.FindUserByID)
-	router.DELETE("/user/:id", controllers.DeleteUserByID)
-	router.PUT("/user/:id", controllers.UpdateUserByID)
+	router.GET("/user/:userid", controllers.FindUserByID)
+	router.DELETE("/user/:userid", controllers.DeleteUserByID)
+	router.PUT("/user/:userid", controllers.UpdateUserByID)
 
-	router.POST("/usericon/:id", controllers.UploadUserIcon)
-	router.DELETE("/usericon/:id", controllers.DeleteUserIcon)
+	router.POST("/usericon/:userid", controllers.UploadUserIcon)
+	router.DELETE("/usericon/:userid", controllers.DeleteUserIcon)
 
-	router.GET("/prefecture/:id", controllers.FindPrefectureByID)
+	// For prefectures
+	router.GET("/prefecture/:prefectureid", controllers.FindPrefectureByID)
 	router.GET("/prefecturelist", controllers.GetAllPrefectures)
 
+	// For trips
 	router.POST("/trip/:userid", controllers.CreateTrip)
-	router.PUT("/trip/:id", controllers.UpdateTripByID)
-	router.GET("/trip/:id", controllers.FindTripByID)
-	router.DELETE("/trip/:id", controllers.DeleteTripByID)
+	router.PUT("/trip/:tripid", controllers.UpdateTripByID)
+	router.GET("/trip/:tripid", controllers.FindTripByID)
+	router.DELETE("/trip/:tripid", controllers.DeleteTripByID)
 
-	router.POST("/tripimage/:id", controllers.UploadTripImage)
-	router.DELETE("/tripimage/:id", controllers.DeleteTripImage)
+	router.POST("/tripimage/:tripid", controllers.UploadTripImage)
+	router.DELETE("/tripimage/:tripid", controllers.DeleteTripImage)
+	router.GET("/tripimage/:tripid", controllers.GetTripImage)
 
-	router.GET("/triplist", controllers.GetAllTrips)
+	router.GET("/tripalllist", controllers.GetAllTrips)
+	router.GET("/triplist", controllers.GetTrips)
 
+	// For spots
 	router.POST("/spot/:tripid", controllers.CreateSpot)
-	router.GET("/spot/:id", controllers.FindSpotByID)
-	router.PUT("/spot/:id", controllers.UpdateSpotByID)
-	router.DELETE("/spot/:id", controllers.DeleteSpotByID)
+	router.GET("/spot/:spotid", controllers.FindSpotByID)
+	router.PUT("/spot/:spotid", controllers.UpdateSpotByID)
+	router.DELETE("/spot/:spotid", controllers.DeleteSpotByID)
 
-	router.GET("/spotlist/:tripid", controllers.GetSpotsByTripID)
+	router.GET("/spotlist/:tripid", controllers.GetSpotsListByTripID)
 
-	router.POST("/spotimage/:id", controllers.UploadSpotImage)
-	router.DELETE("/spotimage/:id", controllers.DeleteSpotImage)
+	router.POST("/spotimage/:spotid", controllers.UploadSpotImage)
+	router.DELETE("/spotimage/:spotid", controllers.DeleteSpotImage)
+	router.GET("/spotimage/:spotid", controllers.GetSpotImage)
 	
 	return router
 }

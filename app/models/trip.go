@@ -2,9 +2,9 @@ package models
 
 import (
 	"time"
-
 	"gorm.io/gorm"
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
+	"github.com/Koshikawaxxx1927/sharetri-backend/database"
 )
 
 type Trip struct {
@@ -27,9 +27,9 @@ func (trip *Trip) CreateTrip() (err error) {
 	return db.Create(trip).Error
 }
 
-func (trip *Trip) FindTripByID(id string) (err error) {
+func (trip *Trip) FindTripByID(tripid string) (err error) {
 	db := config.GetDB()
-	return db.First(trip, id).Error
+	return db.First(trip, tripid).Error
 }
 
 func (trip *Trip) UpdateTripByID() (err error) {
@@ -37,13 +37,18 @@ func (trip *Trip) UpdateTripByID() (err error) {
 	return db.Save(&trip).Error
 }
 
-func (trip *Trip) DeleteTripByID(id string) (err error) {
+func (trip *Trip) DeleteTripByID(tripid string) (err error) {
 	db := config.GetDB()
-	err = db.Delete(trip, id).Error
+	err = db.Delete(trip, tripid).Error
 	return err
 }
 
 func (trips *Trips) GetAllTrips() (err error) {
 	db := config.GetDB()
 	return db.Find(&trips).Error
+}
+
+func (trips *Trips) GetTrips(offset, limit int) (err error) {
+	db := config.GetDB()
+	return db.Offset(offset).Limit(limit).Find(&trips).Error
 }
