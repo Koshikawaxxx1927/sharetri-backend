@@ -1,12 +1,15 @@
 package controllers
 
 import (
+	"io"
+	"os"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/exceptions"
 	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
 	"strconv"
+	"github.com/google/uuid"
 )
 
 func CreateTrip(c *gin.Context) {
@@ -103,18 +106,22 @@ func UploadTripImage(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Server Error")
 		return
 	}
-	var image utils.Image
-	if err := c.ShouldBindJSON(&image); err != nil {
+	file, _, err := c.Request.FormFile("image")
+	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := utils.ProjectRoot + "/storage/trips/" + tripid
-	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
+	outputDir := utils.ProjectRoot + "/storage/spots/" + tripid
+	outputFile := utils.ProjectRoot + "/storage/trips/" + tripid + "/"+ uuid.New().String()
+	os.Mkdir(outputDir, 0777)
+	out, err := os.Create(outputFile)
+	defer out.Close()
+	_, err = io.Copy(out, file)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
-        return
+		return
 	}
-	trip.ImagePath = savePath
+	trip.ImagePath = outputFile
 	if err := trip.UpdateTripByID(); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
         return

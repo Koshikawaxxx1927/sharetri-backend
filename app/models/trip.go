@@ -4,7 +4,6 @@ import (
 	"time"
 	"gorm.io/gorm"
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
-	"github.com/Koshikawaxxx1927/sharetri-backend/database"
 )
 
 type Trip struct {
@@ -18,6 +17,7 @@ type Trip struct {
 	Memo string `json:"memo" binding:"required"`
 	ImagePath string `json:"imagepath"`
 	IsPublic bool `json:"ispublic"`
+	Favorite int `gorm:"DEFAULT:0" json:"favorite"`
 }
 
 type Trips []Trip

@@ -2,12 +2,15 @@ package controllers
 
 import (
 	// "fmt"
+	"io"
+	"os"
 	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/exceptions"
 	"github.com/Koshikawaxxx1927/sharetri-backend/utils"
+	"github.com/google/uuid"
 )
 
 func CreateSpot(c *gin.Context) {
@@ -103,18 +106,22 @@ func UploadSpotImage(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Server Error")
 		return
 	}
-	var image utils.Image
-	if err := c.ShouldBindJSON(&image); err != nil {
+	file, _, err := c.Request.FormFile("image")
+	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputFile := utils.ProjectRoot + "/storage/spots/" + spotid
-	savePath, err := utils.SaveDecodedImage(image.EncodedData, outputFile)
+	outputDir := utils.ProjectRoot + "/storage/spots/" + spotid
+	outputFile := utils.ProjectRoot + "/storage/spots/" + spotid + "/"+ uuid.New().String()
+	os.Mkdir(outputDir, 0777)
+	out, err := os.Create(outputFile)
+	defer out.Close()
+	_, err = io.Copy(out, file)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
-        return
+		return
 	}
-	spot.ImagePath = savePath
+	spot.ImagePath = outputFile
 	if err := spot.UpdateSpotByID(); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
         return
