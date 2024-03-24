@@ -24,7 +24,7 @@ func CreateTrip(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	trip.UserID = userid
+	trip.Uid = userid
 	trip.ImagePath = ""
 	if err := trip.CreateTrip(); err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")

@@ -1,17 +1,13 @@
 package models
 
 import (
-	"time"
-	"gorm.io/gorm"
 	"github.com/Koshikawaxxx1927/sharetri-backend/config"
 )
 
 type User struct {
-	gorm.Model
-	Trips []Trip `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE"`
-	Name string `json:"name" binding:"required"`
-	IconPath string
-	LastLoginTime time.Time
+	Uid string `json:"uid" binding:"required" gorm:"primaryKey"`
+	Trips []Trip `gorm:"foreignKey:Uid;constraint:OnUpdate:CASCADE"`
+	FavoriteTrips []string `gorm:"type:text" json:"favoriteTrips"  binding:"required"`
 }
 
 func (user *User) CreateUser() (err error) {
@@ -21,16 +17,17 @@ func (user *User) CreateUser() (err error) {
 
 func (user *User) FindUserByID(userid string) (err error) {
 	db := config.GetDB()
-	return db.First(user, userid).Error
+	return db.First(&user, "uid = ?",userid).Error
 }
 
-func (user *User) UpdateUserByID() (err error) {
+func (user *User) UpdateUserByID(userid string) (err error) {
 	db := config.GetDB()
+	// return db.Where("uid = ?", userid).Updates(user).Error
 	return db.Save(&user).Error
 }
 
-func (user *User) DeleteUserByID(userid string) (err error) {
+func (user *User) DeleteUserByID() (err error) {
 	db := config.GetDB()
-	err = db.Delete(user, userid).Error
+	err = db.Delete(user).Error
 	return err
 }

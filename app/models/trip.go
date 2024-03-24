@@ -8,7 +8,7 @@ import (
 
 type Trip struct {
 	gorm.Model
-	UserID string `json:"userid"`
+	Uid string `json:"uid" gorm:"size:27"`
 	PrefectureID string `json:"prefectureid" binding:"required"`
 	Spots []Spot `gorm:"fossreignKey:TripID;constraint:OnUpdate:CASCADE"`
 	Title string `json:"title" binding:"required"`

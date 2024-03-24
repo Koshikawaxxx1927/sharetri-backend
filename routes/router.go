@@ -1,6 +1,8 @@
 package routes
 
 import (
+	// "time"
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/http/controllers"
@@ -8,7 +10,12 @@ import (
 
 func Router() *gin.Engine {
 	router := gin.Default()
-	router.Use(cors.Default())
+	// CORSミドルウェアを追加
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"} // 許可するオリジンを設定
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"} // 許可するHTTPメソッドを設定
+	config.AllowHeaders = []string{"Origin", "Content-Type"}
+	router.Use(cors.New(config))
 
 	// For users
 	router.POST("/user", controllers.CreateUser)
@@ -16,8 +23,8 @@ func Router() *gin.Engine {
 	router.DELETE("/user/:userid", controllers.DeleteUserByID)
 	router.PUT("/user/:userid", controllers.UpdateUserByID)
 
-	router.POST("/usericon/:userid", controllers.UploadUserIcon)
-	router.DELETE("/usericon/:userid", controllers.DeleteUserIcon)
+	// router.POST("/usericon/:userid", controllers.UploadUserIcon)
+	// router.DELETE("/usericon/:userid", controllers.DeleteUserIcon)
 
 	// For prefectures
 	router.GET("/prefecture/:prefectureid", controllers.FindPrefectureByID)

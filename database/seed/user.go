@@ -3,7 +3,7 @@ package seed
 import (
 	"log"
 	"fmt"
-	"time"
+	// "time"
 	"encoding/json"
 	"io/ioutil"
 	"github.com/Koshikawaxxx1927/sharetri-backend/app/models"
@@ -28,7 +28,7 @@ func SeedUser() {
 		log.Fatal("Error decoding JSON:", err)
 	}
 	for _, user := range users {
-		user.LastLoginTime = time.Now()
+		// user.LastLoginTime = time.Now()
 		user.CreateUser()
 	}
 }
