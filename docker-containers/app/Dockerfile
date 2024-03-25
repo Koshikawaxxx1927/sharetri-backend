@@ -2,9 +2,9 @@ FROM golang:1.21
 
 WORKDIR /app
 
-COPY src/go.mod .
-COPY src/go.sum .
-COPY src/main.go .
+COPY ../../go.mod .
+COPY ../../go.sum .
+COPY ../../main.go .
 
 RUN go mod tidy
 
