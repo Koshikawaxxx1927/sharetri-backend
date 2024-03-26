@@ -111,7 +111,7 @@ func UploadTripImage(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	outputDir := utils.ProjectRoot + "/storage/spots/" + tripid
+	outputDir := utils.ProjectRoot + "/storage/trips/" + tripid
 	outputFile := utils.ProjectRoot + "/storage/trips/" + tripid + "/"+ uuid.New().String()
 	os.Mkdir(outputDir, 0777)
 	out, err := os.Create(outputFile)

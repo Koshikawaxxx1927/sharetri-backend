@@ -2,10 +2,19 @@ services:
   db:
     platform: linux/amd64
     container_name: mysql_db
-    # build: ./docker-containers/mysql/
     image: mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-u", "root", "-ppassword"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-ppassword",
+        ]
       interval: 3s
       timeout: 5s
       retries: 5
@@ -20,9 +29,12 @@ services:
   app:
     build: .
     container_name: app
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
     ports:
       - "8080:8080"
     volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/key.json:ro
       - ./src:/app
     tty: true
     depends_on:

@@ -6,6 +6,6 @@ COPY src/go.mod .
 COPY src/go.sum .
 COPY src/main.go .
 
-RUN go mod tidy
+# RUN go mod tidy
 
 CMD [ "go", "run", "main.go" ]

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
 	"github.com/Koshikawaxxx1927/sharetri-backend/src/app/http/controllers"
+	"github.com/Koshikawaxxx1927/sharetri-backend/src/app/http/middleware"
 )
 
 func Router() *gin.Engine {
@@ -14,7 +15,7 @@ func Router() *gin.Engine {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"} // 許可するオリジンを設定
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"} // 許可するHTTPメソッドを設定
-	config.AllowHeaders = []string{"Origin", "Content-Type"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
 	router.Use(cors.New(config))
 
 	// For users
@@ -30,29 +31,41 @@ func Router() *gin.Engine {
 	router.GET("/prefecture/:prefectureid", controllers.FindPrefectureByID)
 	router.GET("/prefecturelist", controllers.GetAllPrefectures)
 
+	triplogin := router.Group("/trip/login/api/v1")
+	tripuser := router.Group("/trip/user/api/v1")
 	// For trips
-	router.POST("/trip/:userid", controllers.CreateTrip)
-	router.PUT("/trip/:tripid", controllers.UpdateTripByID)
+	triplogin.Use(middleware.AuthMiddleware())
+	{
+		triplogin.POST("/trip/:userid", controllers.CreateTrip)
+	}
+	tripuser.Use(middleware.AuthUserTripMiddleware())
+	{
+		tripuser.PUT("/trip/:tripid", controllers.UpdateTripByID)
+		tripuser.DELETE("/trip/:tripid", controllers.DeleteTripByID)
+		tripuser.POST("/tripimage/:tripid", controllers.UploadTripImage)
+		tripuser.DELETE("/tripimage/:tripid", controllers.DeleteTripImage)
+	}
 	router.GET("/trip/:tripid", controllers.FindTripByID)
-	router.DELETE("/trip/:tripid", controllers.DeleteTripByID)
-
-	router.POST("/tripimage/:tripid", controllers.UploadTripImage)
-	router.DELETE("/tripimage/:tripid", controllers.DeleteTripImage)
 	router.GET("/tripimage/:tripid", controllers.GetTripImage)
-
 	router.GET("/tripalllist", controllers.GetAllTrips)
 	router.GET("/triplist", controllers.GetTrips)
 
+	spotlogin := router.Group("/spot/login/api/v1")
+	spotuser := router.Group("/spot/user/api/v1")
 	// For spots
-	router.POST("/spot/:tripid", controllers.CreateSpot)
-	router.GET("/spot/:spotid", controllers.FindSpotByID)
-	router.PUT("/spot/:spotid", controllers.UpdateSpotByID)
-	router.DELETE("/spot/:spotid", controllers.DeleteSpotByID)
-
+	spotlogin.Use(middleware.AuthMiddleware())
+	{
+		spotlogin.POST("/spot/:tripid", controllers.CreateSpot)
+	}
+	spotuser.Use(middleware.AuthUserSpotMiddleware())
+	{
+		spotuser.PUT("/spot/:spotid", controllers.UpdateSpotByID)
+		spotuser.DELETE("/spot/:spotid", controllers.DeleteSpotByID)
+		spotuser.POST("/spotimage/:spotid", controllers.UploadSpotImage)
+		spotuser.DELETE("/spotimage/:spotid", controllers.DeleteSpotImage)
+	}
 	router.GET("/spotlist/:tripid", controllers.GetSpotsListByTripID)
-
-	router.POST("/spotimage/:spotid", controllers.UploadSpotImage)
-	router.DELETE("/spotimage/:spotid", controllers.DeleteSpotImage)
+	router.GET("/spot/:spotid", controllers.FindSpotByID)
 	router.GET("/spotimage/:spotid", controllers.GetSpotImage)
 	
 	return router
