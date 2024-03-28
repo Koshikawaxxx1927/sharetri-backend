@@ -24,8 +24,9 @@ func Router() *gin.Engine {
 	router.DELETE("/user/:userid", controllers.DeleteUserByID)
 	router.PUT("/user/:userid", controllers.UpdateUserByID)
 
-	// router.POST("/usericon/:userid", controllers.UploadUserIcon)
-	// router.DELETE("/usericon/:userid", controllers.DeleteUserIcon)
+	router.POST("/usericon/:userid", controllers.UploadUserIcon)
+	router.DELETE("/usericon/:userid", controllers.DeleteUserIcon)
+	router.GET("/usericon/:userid", controllers.GetUserIcon)
 
 	// For prefectures
 	router.GET("/prefecture/:prefectureid", controllers.FindPrefectureByID)
@@ -37,6 +38,7 @@ func Router() *gin.Engine {
 	triplogin.Use(middleware.AuthMiddleware())
 	{
 		triplogin.POST("/trip/:userid", controllers.CreateTrip)
+		triplogin.PUT("/trip/:tripid", controllers.UpdateTripByID)
 	}
 	tripuser.Use(middleware.AuthUserTripMiddleware())
 	{
@@ -67,6 +69,17 @@ func Router() *gin.Engine {
 	router.GET("/spotlist/:tripid", controllers.GetSpotsListByTripID)
 	router.GET("/spot/:spotid", controllers.FindSpotByID)
 	router.GET("/spotimage/:spotid", controllers.GetSpotImage)
+
+	favoritelogin := router.Group("/favorite/login/api/v1")
+	favoritelogin.Use(middleware.AuthMiddleware())
+	{
+		favoritelogin.POST("/favorite", controllers.CreateFavorite)
+		favoritelogin.DELETE("/favorite/:favoriteid", controllers.DeleteFavoriteByID)
+	}
+	// router.POST("/favorite", controllers.CreateFavorite)
+	// router.DELETE("/favorite/:favoriteid", controllers.DeleteFavoriteByID)
+	router.GET("/favorite/uid/:uid", controllers.FindFavoritesByUid)
+	router.GET("/favorite/tripid/:tripid", controllers.FindFavoritesByTripId)
 	
 	return router
 }

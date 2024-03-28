@@ -13,7 +13,7 @@ func main() {
 	env := flag.String("e", "development", "")
     flag.Parse()
 
-	config.InitDB(*env, true, models.Trip{}, models.User{}, models.Prefecture{}, models.Spot{})
+	config.InitDB(*env, true, models.Trip{}, models.User{}, models.Prefecture{}, models.Spot{}, models.Favorite{})
 	seed.Seed()
 	router := routes.Router()
 	if err := router.Run(":8080"); err != nil {
